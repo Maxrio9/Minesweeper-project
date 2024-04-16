@@ -61,25 +61,39 @@ for row in range(rows):
 
 # pygame setup
 pygame.init();
-screen = pygame.display.set_mode((720, 480));
+screen = pygame.display.set_mode((1080, 720));
 clock = pygame.time.Clock();
 running = True;
 dt = 0;
+screen_width = screen.get_width();
+screen_height = screen.get_height();
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2);
+grid_rows = rows;
+grid_columns = columns;
+sprite_size = 17;
+display_scale = 2;
 
 # sprites
 blank_img = pygame.image.load("sprites/blank.png")
+blank_img = pygame.transform.scale(blank_img, (sprite_size * display_scale, sprite_size * display_scale))
+rev0_img = pygame.image.load("sprites/rev0.png")
+rev0_img = pygame.transform.scale(rev0_img, (sprite_size * display_scale, sprite_size * display_scale))
 
 class Blank(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, column, row):
         super().__init__()
         self.image = blank_img
         self.rect = self.image.get_rect()
-        # Set initial position
-        self.rect.center = (screen_width // 2, screen_height // 2)
+        self.rect.y = row
+        self.rect.x = column
 
-blank = Blank()
+sprites_group = pygame.sprite.Group()
+for row in range(rows):
+    for col in range(columns):
+        x = col * sprite_size * display_scale
+        y = row * sprite_size * display_scale
+        blank = Blank(x, y)
+        sprites_group.add(blank)
 
 while running:
     # poll for events
@@ -92,14 +106,12 @@ while running:
     screen.fill((65, 65, 65));
 
     # RENDER YOUR GAME HERE
-    screen.blit(blank.image, blank.rect)
+    sprites_group.draw(screen)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
 
     # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-    dt = clock.tick(60) / 1000;
+    clock.tick(60);
 
 pygame.quit()
