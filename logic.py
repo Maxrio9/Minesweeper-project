@@ -68,6 +68,19 @@ dt = 0;
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2);
 
+# sprites
+blank_img = pygame.image.load("sprites/blank.png")
+
+class Blank(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = blank_img
+        self.rect = self.image.get_rect()
+        # Set initial position
+        self.rect.center = (screen_width // 2, screen_height // 2)
+
+blank = Blank()
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -76,20 +89,10 @@ while running:
             running = False;
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("gray");
+    screen.fill((65, 65, 65));
 
     # RENDER YOUR GAME HERE
-    pygame.draw.circle(screen, "red", player_pos, 40)
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt;
-    if keys[pygame.K_s]:
-        player_pos.y += 300 * dt;
-    if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt;
-    if keys[pygame.K_d]:
-        player_pos.x += 300 * dt;
+    screen.blit(blank.image, blank.rect)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
