@@ -64,21 +64,48 @@ for row in range(rows):
         field[row][column][2] = neighbours;
 
 # Calculate cell in field from mouse position
-def pos_field(pos):
-    x = pos[0]
-    y = pos[1]
+def pos_field(pixel):
+    x = pixel[0]
+    y = pixel[1]
     column = math.floor(x / (sprite_size * display_scale))
     row = math.floor((y - top_border) / (sprite_size * display_scale))
     return column, row
 
 # Update the values of the field after click
 
-def update(pos):
-    print(pos)
-    column, row = pos_field(pos)
+def update(pixel):
+    print(pixel)
+    column, row = pos_field(pixel)
     print(column, row)
     field[row][column][1] = 1;
-    
+    return (column, row)
+# Recursively reveal all the cells around a blank cell and any blank cell in proximity.
+# Currently difficult because we can only know the sprite by interaction with the mouse.
+
+# Return type of cell
+
+def return_type(grid):
+    if field[grid[1]][grid[0]][0] == 1:
+        return "bomb"
+    elif field[grid[1]][grid[0]][2] == 0:
+        return "rev0"
+    elif field[grid[1]][grid[0]][2] == 1:
+        return "rev1"
+    elif field[grid[1]][grid[0]][2] == 2:
+        return "rev2"
+    elif field[grid[1]][grid[0]][2] == 3:
+        return "rev3"
+    elif field[grid[1]][grid[0]][2] == 4:
+        return "rev4"
+    elif field[grid[1]][grid[0]][2] == 5:
+        return "rev5"
+    elif field[grid[1]][grid[0]][2] == 6:
+        return "rev6"
+    elif field[grid[1]][grid[0]][2] == 7:
+        return "rev7"
+    elif field[grid[1]][grid[0]][2] == 8:
+        return "rev8"
+    SystemError("Unexpected Field");
 
 # Visulization and Input
 
@@ -224,6 +251,41 @@ for row in range(rows):
         blank = Blank(x, y)
         sprites_group.add(blank)
 
+def update_sprite(grid):
+    sprites_list = list(sprites_group.sprites())
+    type = return_type(grid)
+    if type == "bomb":
+        new_sprite = Bomb_exp(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev0":
+        new_sprite = Rev0(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev1":
+        new_sprite = Rev1(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev2":
+        new_sprite = Rev2(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev3":
+        new_sprite = Rev3(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev4":
+        new_sprite = Rev4(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev5":
+        new_sprite = Rev5(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev6":
+        new_sprite = Rev6(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev7":
+        new_sprite = Rev7(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+    elif type == "rev8":
+        new_sprite = Rev8(grid[0] * sprite_size * display_scale, grid[1] * sprite_size * display_scale + top_border)
+        sprites_group.add(new_sprite)
+
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -233,7 +295,10 @@ while running:
         elif event.type == pygame.MOUSEBUTTONUP:
             for sprite in sprites_group:
                 if sprite.rect.collidepoint(event.pos):
-                    update(event.pos)
+                    (column, row) = update(event.pos)
+                    sprites_group.remove(sprite)
+                    update_sprite((column, row))
+
                     
 
     # fill the screen with a color to wipe away anything from last frame
