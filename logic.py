@@ -2,6 +2,25 @@ from random import randrange
 import math
 import pygame
 
+'''
+TODO LIST
+IMPROVEMENTS and EXPANSION
+
+Lose Mechanic
+Win Mechanic
+Reset Mechanic
+Flag Mechanic
+Bombs left to Flag Mechanic
+Field Click when Flags in proximity Mechanic
+
+Variable Difficultys before Start-Up
+
+Add calculation of risk for each field
+Add Hint mechanic
+Add AI agent to solve
+
+'''
+
 # Define base variables
 bombs = 99;
 rows = 16;
