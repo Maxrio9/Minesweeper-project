@@ -13,7 +13,7 @@ Flag Mechanic
 Bombs left to Flag Mechanic
 Field Click when Flags in proximity Mechanic
 
-Variable Difficultys before Start-Up
+Variable Difficulties before Start-Up
 
 Add calculation of risk for each field
 Add Hint mechanic
@@ -31,7 +31,7 @@ sprite_size = 17;
 display_scale = 2;
 top_border = 40;
 
-# Create the blank field with (bomb, revealed, neighbours, flag)
+# Create the blank field with (bomb, revealed, neighbors, flag)
 
 field = [];
 
@@ -66,12 +66,12 @@ for row in range(rows):
 print("There are {0} bombs in the field.".format(counter))
 '''
 
-# Calculate the amount of neighbouring bombs except if it's a bomb
+# Calculate the amount of neighboring bombs except if it's a bomb
 for column in range(columns):
     for row in range(rows):
         if field[column][row][0] == 1:
             continue;
-        neighbours = 0;
+        neighbors = 0;
         for i in range(-1,2):
             for j in range(-1,2):
                 if i == 0 and j == 0:
@@ -79,8 +79,8 @@ for column in range(columns):
                 elif i + column < 0 or i + column >= columns or j + row < 0 or j + row >= rows:
                     continue;
                 elif field[i + column][j + row][0] == 1:
-                    neighbours += 1;
-        field[column][row][2] = neighbours;
+                    neighbors += 1;
+        field[column][row][2] = neighbors;
 
 # Calculate cell in field from mouse position
 def pos_field(pixel):
@@ -147,7 +147,7 @@ def return_type(grid):
         return "flag"
     SystemError("Unexpected Field");
 
-# Visulization and Input
+# Visualization and Input
 
 
 # pygame setup
